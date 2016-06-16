@@ -254,7 +254,11 @@ module Kitchen
 
       def dockerfile
         if config[:dockerfile]
-          template = IO.read(File.expand_path(config[:dockerfile]))
+          if config[:dockerfile].starts_with?('http')
+            template = Net::HTTP.get(URI.parse(config[:dockerfile]))
+          else
+            template = IO.read(File.expand_path(config[:dockerfile]))
+          end
           context = DockerERBContext.new(config.to_hash)
           ERB.new(template).result(context.get_binding)
         else
