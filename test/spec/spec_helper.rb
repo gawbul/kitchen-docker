@@ -14,32 +14,11 @@
 # limitations under the License.
 #
 
-require 'rake'
-require 'rspec'
-require 'rspec/its'
-require 'simplecov'
+require "rake"
+require "rspec"
+require "rspec/its"
 
-# Check for coverage stuffs
-formatters = []
-
-if ENV['CODECOV_TOKEN'] || ENV['TRAVIS']
-  require 'codecov'
-  formatters << SimpleCov::Formatter::Codecov
-end
-
-unless formatters.empty?
-  SimpleCov.formatters = formatters
-end
-
-SimpleCov.start do
-  # Don't get coverage on the test cases themselves.
-  add_filter '/spec/'
-  add_filter '/test/'
-  # Codecov doesn't automatically ignore vendored files.
-  add_filter '/vendor/'
-end
-
-require 'kitchen/driver/docker'
+require "kitchen/driver/docker"
 
 RSpec.configure do |config|
   # Basic configuraiton
@@ -50,5 +29,5 @@ RSpec.configure do |config|
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = 'random'
+  config.order = "random"
 end
